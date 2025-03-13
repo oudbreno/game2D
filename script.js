@@ -51,7 +51,7 @@ class Personagem extends Entidade{
             // Implementando conceito chão
             if (this.y >= canvas.height - 50) {
                 this.#velocidadeY = 0;
-                this.pulando = false;
+                this.#pulando = false;
                 this.y = canvas.height - 50; // Ajuste fino na posição
             }
         }
@@ -72,7 +72,7 @@ const personagem = new Personagem(
     canvas.height - 50,
     50,
     50,
-    0
+    
 )
 console.log(personagem)
 
