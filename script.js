@@ -57,6 +57,13 @@ class Personagem extends Entidade{
         }
     }
 }
+const personagem = new Personagem(
+    100,
+    canvas.height - 50,
+    50,
+    50,
+)
+console.log(personagem)
 
 
 class Obstaculo extends Entidade{
@@ -64,17 +71,29 @@ class Obstaculo extends Entidade{
         super(x,y,largura,altura)
         this.velocidadeX = velocidadeX
     }
+    atualizarObstaculo() {
+        this.x -= this.velocidadex;
+        
+        if (this.x <= -this.largura) {
+            this.x = canvas.width;
+            this.velocidadeX = Math.min(obstaculo.velocidadex + 1, 10);
+    
+            let nova_altura = Math.random() * 50 + 100;
+            this.altura = nova_altura;
+            this.y = canvas.height - nova_altura;
+        }
+    }
 }
 
 
-const personagem = new Personagem(
+const obstaculo = new Obstaculo (
+    50,
     100,
-    canvas.height - 50,
-    50,
-    50,
-    
-)
-console.log(personagem)
+    canvas.width - 50,
+    canvas.height - 100,
+    3
+);
+
 
 function loop() {
     if (gameOver == false) {
@@ -82,6 +101,10 @@ function loop() {
         personagem.desenhar('black')
         personagem.atualizarPersonagem(); // Atualiza a posição do personagem
         personagem.desenhar('black'); // Desenha o personagem atualizado
+        obstaculo.desenhar();
+        obstaculo.atualizarObstaculo();
+        obstaculo.desenhar();
+
         requestAnimationFrame(loop);
         
     }
