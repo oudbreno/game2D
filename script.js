@@ -56,6 +56,18 @@ class Personagem extends Entidade{
             }
         }
     }
+    verificarColisao() {
+        if (
+            this.x < obstaculo.x + obstaculo.largura &&
+            this.x + personagem.largura > obstaculo.x &&
+            this.y < obstaculo.y + obstaculo.altura &&
+            this.y + personagem.altura > obstaculo.y
+        ) {
+            alert("Game Over");
+            gameOver==true;
+            return; // Para evitar verificações adicionais após a colisão
+        }
+    }
 }
 const personagem = new Personagem(
     100,
@@ -72,13 +84,13 @@ class Obstaculo extends Entidade{
         this.velocidadeX = velocidadeX
     }
     atualizarObstaculo() {
-        this.x -= this.velocidadex;
+        this.x -= this.velocidadeX;
         
-        if (this.x <= -this.largura) {
+        if (this.x <= 0 -this.largura) {
             this.x = canvas.width;
-            this.velocidadeX = Math.min(obstaculo.velocidadex + 1, 10);
+            this.velocidadeX = Math.min(obstaculo.velocidadeX + 1, 10);
     
-            let nova_altura = Math.random() * 50 + 100;
+            let nova_altura = Math.random() * 20 + 10;
             this.altura = nova_altura;
             this.y = canvas.height - nova_altura;
         }
@@ -87,10 +99,10 @@ class Obstaculo extends Entidade{
 
 
 const obstaculo = new Obstaculo (
+    canvas.width,
+    canvas.height - 50,
     50,
     100,
-    canvas.width - 50,
-    canvas.height - 100,
     3
 );
 
@@ -105,8 +117,20 @@ function loop() {
         obstaculo.atualizarObstaculo();
         obstaculo.desenhar();
 
+        personagem.verificarColisao();
+        
         requestAnimationFrame(loop);
         
     }
 }
 loop()
+
+function reiniciarJogo() {
+    gameOver = false; 
+    personagem.x = 50;
+    personagem.y = canvas.height - personagem.altura; 
+    obstaculo.x = canvas.width; 
+    obstaculo.velocidadeX = 3; 
+    
+    loop()
+}
